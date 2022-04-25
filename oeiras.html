@@ -119,31 +119,29 @@ var lat = 38.712088;
 var lng =  -9.267999;
 var zoom =  1;
 
-
-var map = new L.Map('map', {
-maxBounds: [[38.6532, -9.1562], [38.7716, -9.3846]],
-});
-
-map.on('drag', function() {map.panInsideBounds([[38.6532, -9.1562],[38.7716, -9.3846]], { animate: false });
-});
-
-
 const view_width = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 if (view_width<=500)
 minimo_zoom = 12;
 else
 minimo_zoom = 13;
 
-
-
-
 var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+var sateliteUrl = 'https://api.mapbox.com/styles/v1/frdalmeida/cl1igqvos003f14q42wl56har/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZnJkYWxtZWlkYSIsImEiOiJja3dxZGlpeHowbG5qMnZwbTMwZWtpa2kyIn0.-409cG2gqLjp4MmMll3nwg';
 var osmAttrib='Project - Oeiras Valley Award';
 
 var osm = new L.TileLayer(osmUrl, {minZoom: minimo_zoom, maxNativeZoom: 19,maxZoom: 22, attribution: osmAttrib});
+var satelite = new L.TileLayer(sateliteUrl, {minZoom: minimo_zoom, maxNativeZoom: 19,maxZoom: 22, attribution: osmAttrib});
 
 
-map.addLayer(osm);
+var map = new L.Map('map', {
+maxBounds: [[38.6532, -9.1562], [38.7716, -9.3846]],
+layers:[osm, satelite]
+});
+
+map.on('drag', function() {map.panInsideBounds([[38.6532, -9.1562],[38.7716, -9.3846]], { animate: false });
+});
+
+
 
 map.setView(new L.LatLng(lat, lng), zoom);
 
