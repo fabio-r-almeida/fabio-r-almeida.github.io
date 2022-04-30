@@ -70,10 +70,20 @@
 var old_parking;
 var update = true;
 
+var types = ["deficientes","ev","pagos","parking"];
+var loop = 0;
+
+
 function auto_update(){
+
+    loop = loop + 1;
+    if(loop >3)
+    loop=0;
+
+
     var currentDate = new Date();
     var timestamp = currentDate.getTime();
-    $.get( "./parking/parking.geojson?"+timestamp, function( data ) {
+    $.get( "./parking/"+types[loop]+".geojson?"+timestamp, function( data ) {
     if(_.isEqual(data, old_parking))
     update = false;
     else 
