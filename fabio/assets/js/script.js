@@ -209,10 +209,6 @@ $(function(){
 
 		function searchByPath(dir) {
 
-			if (typeof dir === 'string') {
-			  
-				// do stuff with arr
-		
 			var path = dir.split('/'),
 				demo = response,
 				flag = 0;
@@ -230,9 +226,6 @@ $(function(){
 			demo = flag ? demo : [];
 			return demo;
 
-		} else {
-			console.log('str is not a string');
-		  }
 		}
 
 
