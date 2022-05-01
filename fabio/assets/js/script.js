@@ -208,10 +208,6 @@ $(function(){
 		// Locates a file by path
 
 		function searchByPath(dir) {
-			
-			
-			if (typeof dir !== 'undefined'){
-			
 			var path = dir.split('/'),
 				demo = response,
 				flag = 0;
@@ -228,8 +224,6 @@ $(function(){
 
 			demo = flag ? demo : [];
 			return demo;
-		}
-
 		}
 
 
