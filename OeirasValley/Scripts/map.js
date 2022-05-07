@@ -37,68 +37,6 @@ const geojsonMarkerOptions = {
 }
 
 
-
-L.Mask = L.Polygon.extend({
-    options: {
-        stroke: false,
-        color: '#333',
-        fillOpacity: 0.8,
-        clickable: true,
-
-        outerBounds: new L.LatLngBounds([-90, -360], [90, 360])
-    },
-
-    initialize: function(latLngs, options) {
-
-        var outerBoundsLatLngs = [
-            this.options.outerBounds.getSouthWest(),
-            this.options.outerBounds.getNorthWest(),
-            this.options.outerBounds.getNorthEast(),
-            this.options.outerBounds.getSouthEast()
-        ];
-        L.Polygon.prototype.initialize.call(this, [outerBoundsLatLngs, latLngs], options);
-    },
-
-});
-
-
-L.mask = function(latLngs, options) {
-    return new L.Mask(latLngs, options);
-};
-
-var map = new L.Map('map', {
-    maxBounds: [
-        [38.6532, -9.1562],
-        [38.7716, -9.3846]
-    ],
-    layers: [satelite]
-});
-
-map.on('drag', function() {
-    map.panInsideBounds([
-        [38.6532, -9.1562],
-        [38.7716, -9.3846]
-    ], {
-        animate: false
-    });
-});
-
-
-
-map.setView(new L.LatLng(lat, lng), 1);
-
-
-
-
-// transform geojson coordinates into an array of L.LatLng
-
-
-for (i = 0; i < coordinates.length; i++) {
-    latLngs.push(new L.LatLng(coordinates[i][1], coordinates[i][0]));
-}
-
-L.mask(latLngs).addTo(map);
-
 var myStyle = {
     "color": "#3b5a87",
     "weight": 2,
@@ -106,15 +44,16 @@ var myStyle = {
     "opacity": 1
 };
 
-var layerpoly = new L.geoJson(oeiras.features, myStyle).addTo(map);
-
-
 var baseMaps = {
     "Streets": osm,
     "Satelite": satelite
 };
- 
-var layerControl = L.control.layers(baseMaps).addTo(map);
+
+
+
+
+
+
 
 
 
