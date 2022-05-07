@@ -321,6 +321,7 @@ async function get_updated_parking() {
     a_b_c = jsonConcat(a_b,c.features)
     a_b_c_d = jsonConcat(a_b_c,d.features)
     var combined_parking = JSON.parse('{  "type": "FeatureCollection",  "features": '+JSON.stringify(a_b_c_d)+'}')
+    console.log("updated")
 
     markers.clearLayers();
     L.geoJSON(combined_parking, {
