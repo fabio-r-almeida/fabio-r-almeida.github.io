@@ -7,47 +7,6 @@ var deficientes_ativos = false;
 var types = [false,false,false,true]; //["deficientes", "ev", "pagos", "parking"];
 var types_files = ["deficientes", "ev", "pagos", "parking"];
 
-  
-checkbox_deficientes.addEventListener('change', (event) => {
-    if (event.currentTarget.checked) {
-      types[0] = true;
-      get_updated_parking();
-    } else {
-      types[0] = false;
-      get_updated_parking();
-    }
-  })
-  
-  checkbox_eletricos.addEventListener('change', (event) => {
-    if (event.currentTarget.checked) {
-      types[1] = true;
-      get_updated_parking();
-    } else {
-      types[1] = false;
-      get_updated_parking();
-    }
-  })
-  
-  checkbox_pagos.addEventListener('change', (event) => {
-    if (event.currentTarget.checked) {
-      types[2] = true;
-      get_updated_parking();
-    } else {
-      types[2] = false;
-      get_updated_parking();
-    }
-  })
-  
-  checkbox_gratuitos.addEventListener('change', (event) => {
-    if (event.currentTarget.checked) {
-      types[3] = true;
-      get_updated_parking();
-    } else {
-      types[3] = false;
-      get_updated_parking();
-    }
-  })
-  
 function jsonConcat(o1, o2) {
     for (var key in o2) {
      o1[o1.length++] = o2[key];
