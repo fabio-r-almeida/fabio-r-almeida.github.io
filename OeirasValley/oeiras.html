@@ -2,6 +2,7 @@
 <head>    
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oeiras Valley Project 2022</title>
     <link rel="icon" type="image/x-icon" href="img/oeiras_valley_icon.png">
@@ -14,11 +15,9 @@
     
     <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
     <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
-    <script src = "./oeiras.js"></script> <!--coordenadas de Oeiras-->
+ 
+    <link rel="stylesheet" href="./style/checkbox.css"></script>
 
-    <link rel="stylesheet" href="./style/style.css"> <!--Style da navigation bar-->
-
-  
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -32,9 +31,13 @@
     
 
     <!--marker clusters-->
+    <script src = "./oeiras.js"></script> <!--coordenadas de Oeiras-->
+    <link rel="stylesheet" href="./style/style.css"> <!--Style da navigation bar-->
     <link rel="stylesheet" href="./Cluster/MarkerCluster.css">
     <link rel="stylesheet" href="./Cluster/MarkerCluster.Default.css">
     <script src = "./Cluster/leaflet.markercluster.js"></script> <!--marker cluster-->
+
+
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
 
 
@@ -46,10 +49,22 @@
                     left: 0.0%;
                     top: 0.0%;
                 }
+
+                #table{
+                    position: relative;
+                    width: 100.0%;
+                    height: 80.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                    background-color: white;
+                }
+                .checkbox_in_line {
+                     display:inline-block
+                    }
             </style>
         
 </head>
-<body style="background-color: black;" onload="auto_update();">>    
+<body style="background-color: black;" >    
 
     <div class="header" >
        
@@ -59,43 +74,106 @@
           <a href="#about">About</a>
         </div>
       </div>
+
+      <div id="checkboxes" class="checkbox_in_line"> 
+        <div class="checkbox_in_line">
+            <label style="color:white;">Deficientes</label><input type="checkbox" id="deficientes"></div>
+        <div class="checkbox_in_line">
+            <label style="color:white;">Elétricos</label><input type="checkbox" id="eletricos" /></div>
+        <div class="checkbox_in_line">
+            <label style="color:white;">Pagos</label><input type="checkbox" id="pagos"/></div>
+        <div class="checkbox_in_line">
+            <label style="color:white;">Gratuitos</label><input type="checkbox" id="gratuitos" /></div>
+      </div>
       
       <div id="map" ></div>
+
+      <div id="table" ></div>
     
 </body>
 
 
+
 <script>  
+
+const checkbox_deficientes = document.getElementById('deficientes')
+const checkbox_eletricos = document.getElementById('eletricos')
+const checkbox_pagos = document.getElementById('pagos')
+const checkbox_gratuitos = document.getElementById('gratuitos')
+var deficientes_ativos = false;
+
+checkbox_deficientes.addEventListener('change', (event) => {
+  if (event.currentTarget.checked) {
+    types[0] = true;
+  } else {
+    types[0] = false;
+  }
+})
+
+checkbox_eletricos.addEventListener('change', (event) => {
+  if (event.currentTarget.checked) {
+    types[1] = true;
+  } else {
+    types[1] = false;
+  }
+})
+
+checkbox_pagos.addEventListener('change', (event) => {
+  if (event.currentTarget.checked) {
+    types[2] = true;
+  } else {
+    types[2] = false;
+  }
+})
+
+checkbox_gratuitos.addEventListener('change', (event) => {
+  if (event.currentTarget.checked) {
+    types[3] = true;
+  } else {
+    types[3] = false;
+  }
+})
+
 //auto-update variable for parking:
 var old_parking;
 var update = true;
+var types = [false,false,false,false]; //["deficientes", "ev", "pagos", "parking"];
+var types_files = ["deficientes", "ev", "pagos", "parking"];
 
-var types = ["deficientes", "ev", "pagos", "parking"];
-var loop = 0;
+var geoJSON_total;
 
+function concatGeoJSON(g1, g2){
+   
+    
+    '{"type":"FeatureCollection","features":['+g1.features.concat(g2.features)+']}'
 
-
-function auto_update(type_of_parking) {
-
-
-    var currentDate = new Date();
-    var timestamp = currentDate.getTime();
-    $.get("./parking/" + type_of_parking + ".geojson?" + timestamp, function(data) {
-        if (_.isEqual(data, old_parking))
-            update = false;
-        else
-            update = true;
-
-        old_parking = data;
-
-
-    });
-
-    return old_parking;
+    c
+    
 
 }
 
+function jsonConcat(o1, o2) {
+ for (var key in o2) {
+  o1[o1.length++] = o2[key];
+ }
+ return o1;
+}
+    
 
+
+function update_(i) {
+    return new Promise((resolve, reject) => {
+
+    var currentDate = new Date();
+    var timestamp = currentDate.getTime();
+    $.get("http://fabio-almeida.com/OeirasValley/parking/" + types_files[i] + ".geojson?" + timestamp, function(data) {
+            if(types[i] == true)
+            resolve(data)
+            else 
+            resolve(JSON.parse('{  "type": "FeatureCollection",  "features": []}'))     
+    });
+})
+}
 
 
 L.Mask = L.Polygon.extend({
@@ -223,24 +301,40 @@ const geojsonMarkerOptions = {
 
 
 var markers = L.markerClusterGroup();
+
+
+
+
+
+
+async function get_updated_parking() {
+    const [a,b,c,d] = await Promise.all([update_(0),update_(1),update_(2),update_(3)]);
+    a_b = jsonConcat(a.features,b.features)
+    a_b_c = jsonConcat(a_b,c.features)
+    a_b_c_d = jsonConcat(a_b_c,d.features)
+    var combined_parking = JSON.parse('{  "type": "FeatureCollection",  "features": '+JSON.stringify(a_b_c_d)+'}')
+
+    markers.clearLayers();
+    L.geoJSON(combined_parking, {
+        pointToLayer: function(feature, latlng) {
+            return markers.addLayer(L.circleMarker(latlng, geojsonMarkerOptions))
+        }
+    });
+    map.addLayer(markers);
+}
+
 setInterval(function() {
-
-    loop = loop + 1;
-    if (loop > 3)
-        loop = 0;
-
-    var displyed_parking = auto_update(types[loop]);
-
-    if (update == true) {
-        markers.clearLayers();
-        L.geoJSON(displyed_parking, {
-            pointToLayer: function(feature, latlng) {
-                return markers.addLayer(L.circleMarker(latlng, geojsonMarkerOptions))
-            }
-        });
-        map.addLayer(markers);
-    }
+get_updated_parking();
+}, 100);
 
 
-}, 2000);
+
+
+
+
+
+
+
+
+
 </script>
