@@ -104,33 +104,41 @@ var deficientes_ativos = false;
 
 checkbox_deficientes.addEventListener('change', (event) => {
   if (event.currentTarget.checked) {
+    get_updated_parking();
     types[0] = true;
   } else {
     types[0] = false;
+    get_updated_parking();
   }
 })
 
 checkbox_eletricos.addEventListener('change', (event) => {
   if (event.currentTarget.checked) {
     types[1] = true;
+    get_updated_parking();
   } else {
     types[1] = false;
+    get_updated_parking();
   }
 })
 
 checkbox_pagos.addEventListener('change', (event) => {
   if (event.currentTarget.checked) {
     types[2] = true;
+    get_updated_parking();
   } else {
     types[2] = false;
+    get_updated_parking();
   }
 })
 
 checkbox_gratuitos.addEventListener('change', (event) => {
   if (event.currentTarget.checked) {
     types[3] = true;
+    get_updated_parking();
   } else {
     types[3] = false;
+    get_updated_parking();
   }
 })
 
@@ -323,9 +331,11 @@ async function get_updated_parking() {
     map.addLayer(markers);
 }
 
+
+
 setInterval(function() {
 get_updated_parking();
-}, 100);
+}, 30000);
 
 
 
