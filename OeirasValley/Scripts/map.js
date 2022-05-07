@@ -38,13 +38,6 @@ const geojsonMarkerOptions = {
 
 
 
-
-
-
-
-
-
-
 L.Mask = L.Polygon.extend({
     options: {
         stroke: false,
@@ -73,12 +66,6 @@ L.mask = function(latLngs, options) {
     return new L.Mask(latLngs, options);
 };
 
-
-
-
-
-
-
 var map = new L.Map('map', {
     maxBounds: [
         [38.6532, -9.1562],
@@ -86,7 +73,6 @@ var map = new L.Map('map', {
     ],
     layers: [satelite]
 });
-
 
 map.on('drag', function() {
     map.panInsideBounds([
