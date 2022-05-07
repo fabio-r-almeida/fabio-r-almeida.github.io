@@ -1,4 +1,7 @@
 /* The container */
+
+* {box-sizing: border-box;}
+
 .container {
   display: block;
   position: relative;
