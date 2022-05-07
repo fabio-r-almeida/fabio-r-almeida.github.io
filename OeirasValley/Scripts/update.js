@@ -1,7 +1,3 @@
-const checkbox_deficientes = document.getElementById('deficientes')
-const checkbox_eletricos = document.getElementById('eletricos')
-const checkbox_pagos = document.getElementById('pagos')
-const checkbox_gratuitos = document.getElementById('gratuitos')
 var deficientes_ativos = false;
 
 var types = [false,false,false,true]; //["deficientes", "ev", "pagos", "parking"];
