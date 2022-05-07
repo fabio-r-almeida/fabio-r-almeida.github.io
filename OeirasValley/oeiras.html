@@ -64,7 +64,7 @@
             </style>
         
 </head>
-<body style="background-color: black;" >    
+<body style="background-color: black;"  onload="get_updated_parking()">    
 
     <div class="header" >
        
@@ -75,22 +75,20 @@
         </div>
       </div>
 
-      <div id="checkboxes" class="checkbox_in_line"> 
-        <div class="checkbox_in_line">
-            <label style="color:white;">Deficientes</label><input type="checkbox" id="deficientes"></div>
-        <div class="checkbox_in_line">
-            <label style="color:white;">Elétricos</label><input type="checkbox" id="eletricos" /></div>
-        <div class="checkbox_in_line">
-            <label style="color:white;">Pagos</label><input type="checkbox" id="pagos"/></div>
-        <div class="checkbox_in_line">
-            <label style="color:white;">Gratuitos</label><input type="checkbox" id="gratuitos" /></div>
+      <div class="container">
+        <ul class="ks-cboxtags">
+          <li style="margin-left: 0%;"><input type="checkbox" id="deficientes" value="deficientes"><label for="deficientes">Deficientes</label></li>
+          <li style="margin-left: 5%;"><input type="checkbox" id="eletricos" value="eletricos"><label for="eletricos">Elétricos</label></li>
+          <li style="margin-left: 5%;"> <input type="checkbox" id="pagos" value="pagos"><label for="pagos">Pagos</label></li>
+          <li style="margin-left: 5%;"><input type="checkbox" id="gratuitos" value="gratuitos" checked><label for="gratuitos">Gratuitos</label></li>
+        </ul>
       </div>
       
       <div id="map" ></div>
 
       <div id="table" ></div>
     
-</body>
+</body >
 
 
 
