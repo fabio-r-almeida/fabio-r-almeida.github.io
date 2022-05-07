@@ -1,3 +1,4 @@
+
     * {box-sizing: border-box;}
     
     body { 
@@ -75,3 +76,23 @@
         
       }
     }
+
+    #map {
+      position: relative;
+      width: 100.0%;
+      height: 80.0%;
+      left: 0.0%;
+      top: 0.0%;
+  }
+
+  #table {
+      position: relative;
+      width: 100.0%;
+      height: 80.0%;
+      left: 0.0%;
+      top: 0.0%;
+      background-color: white;
+  }
+  .checkbox_in_line {
+      display: inline-block;
+  }
