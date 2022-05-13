@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oeiras Valley Project 2022</title>
+    <link rel="icon" type="image/x-icon" href="img/oeiras_valley_icon.png">
+    <script>
+        L_NO_TOUCH = false;
+        L_DISABLE_3D = false;
+    </script>
+
+    <style>html,body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position: absolute;top: 0;bottom: 0;right: 0;left: 0;}</style>
+
+    <link rel="stylesheet" href="./style/checkbox.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css" />
+    <!--marker clusters-->
+    <script src="./Scripts/oeiras.js"></script>
+    <!--coordenadas de Oeiras-->
+    <link rel="stylesheet" href="./style/style.css">
+    <!--Style da navigation bar-->
+    <link rel="stylesheet" href="./Cluster/MarkerCluster.css">
+    <link rel="stylesheet" href="./Cluster/MarkerCluster.Default.css">
+    <script src="./Cluster/leaflet.markercluster.js"></script>
+    <!--marker cluster-->
+    <script src="./Scripts/map.js"></script>
+    <!--map logic-->
+    <script src="./Scripts/update.js"></script>
+    <!--map update logic-->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+</head>
+
+<body style="background-color: black;" onload="get_updated_parking()">
+    <div class="container">
+        <ul class="ks-cboxtags">
+            <li style="margin-left: 0%;"><input type="checkbox" id="deficientes" value="deficientes"><label for="deficientes">Deficientes</label></li>
+            <li style="margin-left: 5%;"><input type="checkbox" id="eletricos" value="eletricos"><label for="eletricos">Elétricos</label></li>
+            <li style="margin-left: 5%;"> <input type="checkbox" id="pagos" value="pagos"><label for="pagos">Pagos</label></li>
+            <li style="margin-left: 5%;"><input type="checkbox" id="gratuitos" value="gratuitos" checked><label for="gratuitos">Gratuitos</label></li>
+        </ul>
+    </div>
+    <div id="map"></div>
+    <!--<div id="table" ></div>-->
+</body>
+
+
+<script>  
+
+document.getElementById('deficientes').addEventListener('change', (event) => {
+    if (event.currentTarget.checked) {
+        types[0] = true;
+        get_updated_parking();
+    } else {
+        types[0] = false;
+        get_updated_parking();
+    }
+})
+
+document.getElementById('eletricos').addEventListener('change', (event) => {
+    if (event.currentTarget.checked) {
+        types[1] = true;
+        get_updated_parking();
+    } else {
+        types[1] = false;
+        get_updated_parking();
+    }
+})
+
+document.getElementById('pagos').addEventListener('change', (event) => {
+    if (event.currentTarget.checked) {
+        types[2] = true;
+        get_updated_parking();
+    } else {
+        types[2] = false;
+        get_updated_parking();
+    }
+})
+
+document.getElementById('gratuitos').addEventListener('change', (event) => {
+    if (event.currentTarget.checked) {
+        types[3] = true;
+        get_updated_parking();
+    } else {
+        types[3] = false;
+        get_updated_parking();
+    }
+})
+
+L.Mask = L.Polygon.extend({
+    options: {
+        stroke: false,
+        color: '#333',
+        fillOpacity: 0.8,
+        clickable: true,
+        outerBounds: new L.LatLngBounds([-90, -360], [90, 360])
+    },
+    initialize: function(latLngs, options) {
+        var outerBoundsLatLngs = [
+            this.options.outerBounds.getSouthWest(),
+            this.options.outerBounds.getNorthWest(),
+            this.options.outerBounds.getNorthEast(),
+            this.options.outerBounds.getSouthEast()
+        ];
+        L.Polygon.prototype.initialize.call(this, [outerBoundsLatLngs, latLngs], options);
+    },
+});
+
+L.mask = function(latLngs, options) {
+    return new L.Mask(latLngs, options);
+};
+
+var map = new L.Map('map', {
+    maxBounds: [
+        [38.6532, -9.1562],
+        [38.7716, -9.3846]
+    ],
+    layers: [satelite]
+});
+
+map.on('drag', function() {
+    map.panInsideBounds([
+        [38.6532, -9.1562],
+        [38.7716, -9.3846]
+    ], {
+        animate: false
+    });
+});
+
+map.setView(new L.LatLng(lat, lng), 1);
+
+// transform geojson coordinates into an array of L.LatLng
+for (i = 0; i < coordinates.length; i++) {
+    latLngs.push(new L.LatLng(coordinates[i][1], coordinates[i][0]));
+}
+
+L.mask(latLngs).addTo(map);
+var layerpoly = new L.geoJson(oeiras.features, myStyle).addTo(map);
+var layerControl = L.control.layers(baseMaps).addTo(map);
+var markers = L.markerClusterGroup();
+
+
+async function get_updated_parking() {
+    const [a, b, c, d] = await Promise.all([update_(0), update_(1), update_(2), update_(3)]);
+    a_b = jsonConcat(a.features, b.features)
+    a_b_c = jsonConcat(a_b, c.features)
+    a_b_c_d = jsonConcat(a_b_c, d.features)
+    var combined_parking = JSON.parse('{  "type": "FeatureCollection",  "features": ' + JSON.stringify(a_b_c_d) + '}')
+    markers.clearLayers();
+    L.geoJSON(combined_parking, {
+        pointToLayer: function(feature, latlng) {
+            return markers.addLayer(L.circleMarker(latlng, geojsonMarkerOptions))
+        }
+    });
+    map.addLayer(markers);
+}
+
+
+</script>
