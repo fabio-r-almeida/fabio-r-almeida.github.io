@@ -43,16 +43,20 @@
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
 </head>
 
-<body style="background-color: black;overflow: hidden;" onload="get_updated_parking()">
+<body style="background-color: black;" onload="get_updated_parking()">
+    <div class="header">
+        <div class="header-right">
+        </div>
+    </div>
     <div class="container">
         <ul class="ks-cboxtags">
-            <li style="margin-left: 5%;"><input type="checkbox" id="deficientes" value="deficientes"><label for="deficientes">Deficientes</label></li>
+            <li style="margin-left: 0%;"><input type="checkbox" id="deficientes" value="deficientes"><label for="deficientes">Deficientes</label></li>
             <li style="margin-left: 5%;"><input type="checkbox" id="eletricos" value="eletricos"><label for="eletricos">Elétricos</label></li>
             <li style="margin-left: 5%;"> <input type="checkbox" id="pagos" value="pagos"><label for="pagos">Pagos</label></li>
             <li style="margin-left: 5%;"><input type="checkbox" id="gratuitos" value="gratuitos" checked><label for="gratuitos">Gratuitos</label></li>
         </ul>
     </div>
-    <div id="map" style="height:90%;"></div>
+    <div id="map"></div>
     <!--<div id="table" ></div>-->
 </body>
 
