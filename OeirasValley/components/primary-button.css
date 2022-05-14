@@ -7,20 +7,22 @@
 }
 .primary-button-button {
   color: var(--dl-color-gray-white);
+  width: 189px;
+  height: 64px;
+  font-size: 22px;
   align-self: center;
+  text-align: center;
   transition: 0.3s;
+  font-family: Spectral;
+  font-weight: 600;
   padding-top: 12px;
   border-width: 0px;
   padding-left: 32px;
   border-radius: var(--dl-radius-radius-radius6);
   padding-right: 32px;
   padding-bottom: 12px;
+  text-transform: none;
+  text-decoration: none;
   background-color: var(--dl-color-purple-default);
-}
-.primary-button-button:hover {
-  background-color: var(--dl-color-purple-900);
-}
-.primary-button-button:active {
-  background-color: var(--dl-color-purple-1000);
 }
 
