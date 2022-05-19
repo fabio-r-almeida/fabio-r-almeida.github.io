@@ -16,7 +16,7 @@ function update_(i) {
 
     var currentDate = new Date();
     var timestamp = currentDate.getTime();
-    $.get("./parking/" + types_files[i] + ".geojson?" + timestamp, function(data) {
+    $.get("http://fabio-almeida.com/OeirasValley/parking/" + types_files[i] + ".geojson?" + timestamp, function(data) {
             if(types[i] == true)
             resolve(data)
             else 
