@@ -1,0 +1,5 @@
+MX fabio-almeida.com eforward3.registrar-servers.com 10
+MX fabio-almeida.com eforward2.registrar-servers.com 10
+MX fabio-almeida.com eforward1.registrar-servers.com 10
+MX fabio-almeida.com eforward1.registrar-servers.com 15
+MX fabio-almeida.com eforward1.registrar-servers.com 20
