@@ -39,12 +39,13 @@
     <script src="./Scripts/map.js"></script>
     <!--map logic-->
     <script src="./Scripts/update.js"></script>
+    <script src="./Scripts/get_radius.js"></script>
+
     <!--map update logic-->
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-    <script src="bigdatacloud_reverse_geocode.js" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/gh/bigdatacloudapi/js-reverse-geocode-client@latest/bigdatacloud_reverse_geocode.min.js" type="text/javascript"></script>
+    <script>src="https://cdn.jsdelivr.net/npm/geodesy@2.4.0/latlon-spherical.min.js"</script>
 
 
 
@@ -183,24 +184,32 @@ async function get_updated_parking() {
         }
     });
     map.addLayer(markers);
-    markers.bindPopup(latlng).openPopup();
 }
 
 
 var popup = L.popup();
 function onMapClick(e) {
     var link = " http://www.google.com/maps/dir/Current+Location/"+e.latlng.lat+","+e.latlng.lng
-
     popup
         .setLatLng(e.latlng)
         .setContent(" <span>Direções para esta localização<br></span>  \n" + '<a href='+link+'>Google Maps</a>')
         .openOn(map);
-
-
 }
 map.on('click', onMapClick)
 
-L.Control.geocoder().addTo(map);
+
+var options = {
+  bounds: true,
+  position: 'topleft',
+  expanded: true,
+  placeholder: 'Search nearby',
+  autocomplete:true
+
+};
+
+L.Control.geocoder(options).addTo(map);
+
+//L.Control.geocoder().addTo(map);
 
 
 
@@ -242,5 +251,9 @@ var dvTable = document.getElementById("dvTable");
 dvTable.innerHTML = "";
 //dvTable.appendChild(table);
 }
+
+
+
+
 
 </script>
