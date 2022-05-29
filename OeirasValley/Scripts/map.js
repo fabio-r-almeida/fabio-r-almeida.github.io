@@ -4,7 +4,7 @@ var lng = -9.267999;
 var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 var sateliteUrl = 'https://api.mapbox.com/styles/v1/frdalmeida/cl1igqvos003f14q42wl56har/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZnJkYWxtZWlkYSIsImEiOiJja3dxZGlpeHowbG5qMnZwbTMwZWtpa2kyIn0.-409cG2gqLjp4MmMll3nwg';
 var osmAttrib = 'Project - Oeiras Valley Award';
-
+var Address_of_the_click;
 var coordinates = oeiras.features[0].geometry.coordinates[0];
 var latLngs = [];
 
@@ -25,7 +25,10 @@ var satelite = new L.TileLayer(sateliteUrl, {
     attribution: osmAttrib
 });
 
-
+var theCircle;
+var theMarker;
+var geojsonLayer;
+var bbTeam;
 // adicionar markers ao mapa
 const geojsonMarkerOptions = {
     radius: 8,
